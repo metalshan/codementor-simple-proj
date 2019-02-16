@@ -2,6 +2,7 @@ import { model, property } from '../../core';
 
 @model()
 export class RegisterRq {
-  @property() username: string;
-  @property() password: string;
+  @property({ required: true }) email: string;
+  @property({ required: true }) name: string;
+  @property({ required: true }) password: string;
 }

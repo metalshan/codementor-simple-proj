@@ -16,7 +16,23 @@ export class AccountController {
   async register(
     @requestBody({ required: true }) reg: RegisterRq
   ): Promise<User> {
-    return await accountService.register(reg.username, reg.password);
+    const userRq = new User({
+      username: reg.email,
+      password: reg.password
+    });
+    if (!userRq.validate().isValid) {
+      throw new HttpErrors[422](userRq.validate().message);
+    }
+    const prevUser = await User.findOne<User>({
+      where: {
+        username: reg.email
+      }
+    });
+    if (prevUser) {
+      throw new HttpErrors[409]('Email already registered')
+    }
+    const user = await await accountService.register(reg.email, reg.password, reg.name);
+    return user.toUiModel();
   }
 
   @post({

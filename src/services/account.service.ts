@@ -6,13 +6,13 @@ const salt = genSaltSync(BCRYPT_SALT_ROUNDS);
 
 export class AccountService {
   // Register a new user
-  async register(username: string, password: string): Promise<User> {
+  async register(email: string, password: string, name: string): Promise<User> {
     const user = new User({
-      username,
+      username: email,
       password: hashSync(password, salt),
     });
     await user.save();
-    const details = new UserDetails({ userId: user.id });
+    const details = new UserDetails({ userId: user.id, email, name });
     await details.save();
     user.details = details;
     return user;

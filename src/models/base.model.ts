@@ -1,4 +1,4 @@
-import { getConnectionManager, Column, getRepository, FindOneOptions, getConnection } from 'typeorm';
+import { getConnectionManager, Column, getRepository, FindOneOptions } from 'typeorm';
 import { getModelMap } from '../core';
 
 function getConnectionName(classFn: Function) {
@@ -60,6 +60,10 @@ export class BaseEntity<T> extends Base {
   })
   updatedAt: Date;
 
+  validate(): ValidationModel {
+    return new ValidationModel(true);
+  }
+
   async save(): Promise<T> {
     const manager = getManager(this.constructor);
     const result = await manager.save((this as any)); // tslint:disable-line
@@ -94,12 +98,17 @@ export class BaseEntity<T> extends Base {
   }
 
   async delete(): Promise<boolean> {
-    await getConnection()
-      .createQueryBuilder()
-      .delete()
-      .from(this.constructor)
-      .where("id = :id", { id: this.id })
-      .execute();
+    const manager = getManager(this.constructor);
+    await manager.delete(this.constructor, { id: this.id });
     return true;
   }
+}
+
+export class ValidationModel {
+  constructor(isValid?: boolean, message?: string) {
+    this.isValid = isValid || false;
+    this.message = message || "";
+  }
+  isValid: boolean;
+  message: string;
 }
