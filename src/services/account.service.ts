@@ -41,7 +41,7 @@ export class AccountService {
     }
     const accessToken = await AccessToken.findOne<AccessToken>({
       where: {
-        id: user.accessToken
+        token: user.accessToken
       }
     });
     if (accessToken) {
