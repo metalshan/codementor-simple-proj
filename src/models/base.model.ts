@@ -1,4 +1,4 @@
-import { getConnectionManager, Column, getRepository, FindOneOptions } from 'typeorm';
+import { getConnectionManager, Column, getRepository, FindOneOptions, getConnection } from 'typeorm';
 import { getModelMap } from '../core';
 
 function getConnectionName(classFn: Function) {
@@ -39,6 +39,13 @@ export class BaseEntity<T> extends Base {
   constructor(data?: Partial<BaseEntity<T>>) {
     super(data);
   }
+  @Column('uuid', {
+    nullable: false,
+    default: 'uuid_generate_v4()',
+    primary: true,
+  })
+  id: string;
+
   @Column('timestamp without time zone', {
     nullable: false,
     default: 'now()',
@@ -84,5 +91,15 @@ export class BaseEntity<T> extends Base {
     // obj is eating __proto__
     const result = await getRepository<T>(this, getConnectionName(this)).find(restoreProto<T>(obj));
     return result;
+  }
+
+  async delete(): Promise<boolean> {
+    await getConnection()
+      .createQueryBuilder()
+      .delete()
+      .from(this.constructor)
+      .where("id = :id", { id: this.id })
+      .execute();
+    return true;
   }
 }

@@ -14,13 +14,6 @@ export class User extends BaseEntity<User> {
     super(data);
   }
 
-  @Column('uuid', {
-    nullable: false,
-    default: 'uuid_generate_v4()',
-    primary: true,
-  })
-  id: string;
-
   @Column({
     nullable: false,
   })
@@ -31,6 +24,8 @@ export class User extends BaseEntity<User> {
   })
   password: string;
 
+  accessToken: string;
+
   @property()
   @OneToOne(type => UserDetails, details => details.user)
   details: UserDetails;
@@ -38,6 +33,7 @@ export class User extends BaseEntity<User> {
   toUiModel(): User {
     const user = new User(this);
     delete user.password;
+    delete user.accessToken;
     return user;
   }
 }

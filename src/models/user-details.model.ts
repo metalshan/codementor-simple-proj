@@ -13,13 +13,6 @@ export class UserDetails extends BaseEntity<UserDetails> {
     super(data);
   }
 
-  @Column('uuid', {
-    nullable: false,
-    default: 'uuid_generate_v4()',
-    primary: true,
-  })
-  id: string;
-
   @Column({ name: 'user_id', nullable: false })
   userId: string;
 

@@ -44,6 +44,7 @@ export class CustomAuthStrategyProvider implements Provider<Strategy | undefined
         relations: ['details']
       });
       if (user) {
+        user.accessToken = token;
         _user = user;
       }
     }

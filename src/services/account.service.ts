@@ -34,6 +34,21 @@ export class AccountService {
 
     return accessToken;
   }
+
+  async logout(user: User): Promise<{ success: boolean }> {
+    if (!user.accessToken) {
+      throw new Error('No access token found to logout');
+    }
+    const accessToken = await AccessToken.findOne<AccessToken>({
+      where: {
+        id: user.accessToken
+      }
+    });
+    if (accessToken) {
+      await accessToken.delete();
+    }
+    return { success: true }
+  }
 }
 
 export const accountService = new AccountService();
