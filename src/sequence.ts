@@ -47,8 +47,7 @@ export class MySequence implements SequenceHandler {
 
 
 function removeSlash(url: string) {
-  return url;
-  if (url.length < 2) {
+  if (url.length < 2 || url.toLowerCase() === '/explorer' || url.toLowerCase() === '/explorer/') {
     return url;
   }
   let modUrl = (url[url.length - 1] === '/') ? url.substr(0, url.length - 1) : url;

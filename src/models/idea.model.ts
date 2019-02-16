@@ -29,8 +29,11 @@ export class Idea extends BaseEntity<Idea> {
   confidence: number;
 
   @property()
-  get average(): number {
-    return Math.round((this.impact + this.ease + this.confidence) / 3);
+  average: number;
+
+  toUiModel(): Idea {
+    this.average = Math.round((this.impact + this.ease + this.confidence) / 3);
+    return this;
   }
 
   assign(anotherObject: Partial<Idea>) {

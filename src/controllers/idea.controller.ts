@@ -20,11 +20,12 @@ export class IdeaController {
   })
   @auth()
   async getAllAgainstCurrentUser(): Promise<Idea[]> {
-    return Idea.find<Idea>({
+    const ideas = await Idea.find<Idea>({
       where: {
         userId: this.user.id
       }
     });
+    return ideas.map(i => i.toUiModel());
   }
 
   @get({
@@ -44,7 +45,7 @@ export class IdeaController {
     if (!idea) {
       throw new HttpErrors.NotFound('Idea not found');
     }
-    return idea;
+    return idea.toUiModel();
   }
 
   @post({
@@ -61,7 +62,7 @@ export class IdeaController {
     if (!idea.validate()) {
       throw new HttpErrors[422](idea.validate().message);
     }
-    return idea.save();
+    return idea.save().then(i => i.toUiModel());
   }
 
   @put({
@@ -85,7 +86,7 @@ export class IdeaController {
     if (!idea.validate()) {
       throw new HttpErrors[422](idea.validate().message);
     }
-    return idea.save();
+    return idea.save().then(i => i.toUiModel());
   }
 
   @del({
