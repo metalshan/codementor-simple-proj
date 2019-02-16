@@ -59,7 +59,8 @@
     "passport": "^0.4.0",
     "passport-http-bearer": "^1.0.1",
     "typeorm": "^0.2.9",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "uuid-validate": "0.0.3"
   },
   "devDependencies": {
     "@loopback/build": "^1.0.1",
@@ -69,6 +70,7 @@
     "@types/passport": "^0.4.7",
     "@types/passport-http": "^0.3.6",
     "@types/passport-http-bearer": "^1.0.33",
-    "@types/uuid": "^3.4.4"
+    "@types/uuid": "^3.4.4",
+    "@types/uuid-validate": "0.0.1"
   }
 }

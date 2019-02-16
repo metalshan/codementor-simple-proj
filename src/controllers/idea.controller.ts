@@ -3,7 +3,7 @@ import { AuthenticationBindings } from '@loopback/authentication';
 import { auth, api, get, post, del, put } from '../core';
 import { inject } from '@loopback/context';
 import { param, HttpErrors, requestBody } from '@loopback/rest';
-
+import * as validateUUID from 'uuid-validate';
 @api({
   basePath: '/ideas'
 })
@@ -37,6 +37,9 @@ export class IdeaController {
   async getOneAgainstCurrentUser(
     @param.path.string('id') id: string,
   ): Promise<Idea> {
+    if (!validateUUID(id, 4)) {
+      throw new HttpErrors.NotFound('Idea not found');
+    }
     const idea = await Idea.findOne<Idea>({
       where: {
         id
@@ -75,6 +78,9 @@ export class IdeaController {
     @param.path.string('id') id: string,
     @requestBody({ required: true }) ideaReq: CreateModifyIdeaRq
   ): Promise<Idea> {
+    if (!validateUUID(id, 4)) {
+      throw new HttpErrors.NotFound('Idea not found');
+    }
     const idea = await Idea.findOne<Idea>({
       where: { id, userId: this.user.id }
     });
@@ -99,6 +105,9 @@ export class IdeaController {
     @param.path.string('id') id: string,
     @requestBody({ required: true }) ideaReq: CreateModifyIdeaRq
   ): Promise<SuccessRs> {
+    if (!validateUUID(id, 4)) {
+      throw new HttpErrors.NotFound('Idea not found');
+    }
     const idea = await Idea.findOne<Idea>({
       where: { id, userId: this.user.id }
     });
