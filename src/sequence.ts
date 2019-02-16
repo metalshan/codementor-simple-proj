@@ -28,6 +28,8 @@ export class MySequence implements SequenceHandler {
   async handle(context: RequestContext) {
     try {
       const { request, response } = context;
+      request.url = removeSlash(request.url); // removing unnecessary slash
+
       const route = this.findRoute(request);
 
       // !!IMPORTANT: authenticateRequest fails on static routes!
@@ -41,4 +43,19 @@ export class MySequence implements SequenceHandler {
       this.reject(context, err);
     }
   }
+}
+
+
+function removeSlash(url: string) {
+  return url;
+  if (url.length < 2) {
+    return url;
+  }
+  let modUrl = (url[url.length - 1] === '/') ? url.substr(0, url.length - 1) : url;
+  if (modUrl.includes('?')) {
+    const [first, second] = modUrl.split('?');
+    modUrl = (first[first.length - 1] === '/') ? first.substr(0, first.length - 1) : first;
+    modUrl += `?${second}`;
+  }
+  return modUrl;
 }

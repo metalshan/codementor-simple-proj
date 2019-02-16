@@ -17,10 +17,10 @@ export class UserDetails extends BaseEntity<UserDetails> {
   userId: string;
 
   @Column({ nullable: true })
-  email?: string;
+  email: string;
 
   @Column({ nullable: true })
-  name?: string;
+  name: string;
 
   @property()
   @OneToOne(_type => User)

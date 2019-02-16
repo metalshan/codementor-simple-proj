@@ -16,17 +16,22 @@ class CoreControllerApiSpec {
 class CoreRouterSpec {
   path: string;
   description: string;
-  returnType: Function
+  returnType: Function;
+  isArray?: boolean
 }
 
 function createLb4OpenApiSpec(spec: CoreRouterSpec) {
+  let schema: { 'x-ts-type'?: Function, type?: string, items?: { 'x-ts-type': Function } } = { 'x-ts-type': spec.returnType };
+  if (spec.isArray) {
+    schema = { 'type': 'array', 'items': { 'x-ts-type': spec.returnType } }
+  }
   return {
     responses: {
       '200': {
         description: spec.description,
         content: {
           'application/json': {
-            schema: { 'x-ts-type': spec.returnType }
+            schema
           }
         },
       },

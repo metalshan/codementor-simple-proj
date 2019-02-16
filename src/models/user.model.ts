@@ -4,9 +4,10 @@ import {
   property
 } from '../core';
 import { BaseEntity } from './';
-import { OneToOne } from 'typeorm';
+import { OneToOne, OneToMany } from 'typeorm';
 import { UserDetails } from './user-details.model';
 import { ValidationModel } from './base.model';
+import { Idea } from './idea.model';
 
 function validateEmail(email: string): boolean {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -35,6 +36,10 @@ export class User extends BaseEntity<User> {
   @property()
   @OneToOne(type => UserDetails, details => details.user)
   details: UserDetails;
+
+  @property({ itemType: Idea })
+  @OneToMany(type => Idea, idea => idea.user)
+  ideas: Idea[];
 
   validate(): ValidationModel {
     const v = super.validate();

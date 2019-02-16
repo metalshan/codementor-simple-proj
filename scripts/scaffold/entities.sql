@@ -36,3 +36,18 @@ CREATE TABLE access_token (
     UNIQUE(id)
 );
 
+
+DROP TABLE IF EXISTS idea;
+CREATE TABLE idea (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID NOT NULL REFERENCES users (id),
+    title VARCHAR NOT NULL,
+    impact INTEGER NOT NULL DEFAULT 10,
+    ease INTEGER NOT NULL DEFAULT 10,
+    confidence INTEGER NOT NULL DEFAULT 10,
+
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(id)
+);
+
