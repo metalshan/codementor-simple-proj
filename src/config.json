@@ -1,0 +1,6 @@
+{
+  "datasource": {
+    "default": "postgres"
+  },
+  "apiBasePath": "/api"
+}
