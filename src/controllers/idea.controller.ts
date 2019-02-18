@@ -20,7 +20,7 @@ export class IdeaController {
   })
   @auth()
   async getAllAgainstCurrentUser(
-    @param.query.string('page') page: number = 0,
+    @param.query.string('page') page: number = 1,
   ): Promise<Idea[]> {
     if (page <= 0) {
       throw new HttpErrors[422]("page has to be greater than 0");

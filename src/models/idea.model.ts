@@ -20,8 +20,8 @@ export class Idea extends BaseEntity<Idea> {
   @Column({ name: 'user_id', nullable: false })
   userId: string;
 
-  @Column({ nullable: false })
-  title: string;
+  @Column({ nullable: false, name: 'title' })
+  content: string;
 
   @Column()
   impact: number;
@@ -41,8 +41,8 @@ export class Idea extends BaseEntity<Idea> {
   }
 
   assign(anotherObject: Partial<Idea>) {
-    if (typeof anotherObject.title === 'string') {
-      this.title = anotherObject.title;
+    if (typeof anotherObject.content === 'string') {
+      this.content = anotherObject.content;
     }
     if (typeof anotherObject.ease === 'number') {
       this.ease = anotherObject.ease;
