@@ -1,4 +1,4 @@
-import { getConnectionManager, Column, getRepository, FindOneOptions } from 'typeorm';
+import { getConnectionManager, Column, getRepository, FindOneOptions, FindManyOptions } from 'typeorm';
 import { getModelMap } from '../core';
 
 function getConnectionName(classFn: Function) {
@@ -91,7 +91,7 @@ export class BaseEntity<T> extends Base {
   }
 
   // to fetch records
-  static async find<T>(obj?: FindOneOptions<T>): Promise<T[]> {
+  static async find<T>(obj?: FindManyOptions<T>): Promise<T[]> {
     // obj is eating __proto__
     const result = await getRepository<T>(this, getConnectionName(this)).find(restoreProto<T>(obj));
     return result;

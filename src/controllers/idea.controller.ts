@@ -19,11 +19,21 @@ export class IdeaController {
     isArray: true
   })
   @auth()
-  async getAllAgainstCurrentUser(): Promise<Idea[]> {
+  async getAllAgainstCurrentUser(
+    @param.query.string('page') page: number = 0,
+  ): Promise<Idea[]> {
+    if (page <= 0) {
+      throw new HttpErrors[422]("page has to be greater than 0");
+    }
     const ideas = await Idea.find<Idea>({
       where: {
         userId: this.user.id
-      }
+      },
+      order: {
+        createdAt: 'DESC'
+      },
+      take: 10,
+      skip: (page - 1) * 10
     });
     return ideas.map(i => i.toUiModel());
   }
