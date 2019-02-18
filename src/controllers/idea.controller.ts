@@ -62,7 +62,7 @@ export class IdeaController {
   ): Promise<Idea> {
     const idea = new Idea(ideaReq);
     idea.userId = this.user.id;
-    if (!idea.validate()) {
+    if (!idea.validate().isValid) {
       throw new HttpErrors[422](idea.validate().message);
     }
     return idea.save().then(i => i.toUiModel());
@@ -89,7 +89,7 @@ export class IdeaController {
     }
 
     idea.assign(ideaReq);
-    if (!idea.validate()) {
+    if (!idea.validate().isValid) {
       throw new HttpErrors[422](idea.validate().message);
     }
     return idea.save().then(i => i.toUiModel());
